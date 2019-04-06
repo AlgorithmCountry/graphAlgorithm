@@ -10,20 +10,24 @@
 #define INFINITY 32767
 
 using namespace std;
+vector<int> vertexes;
+
 vector<vector<int> > arcs;
 int arcNum = 0;
 int vexNum = 0;
 
 void CrtMatrixGraph(){
 	cin>>vexNum;
-	arcs.resize(vexNum+1,vector<int>(vexNum+1,32767) );
-
+	vertexes.resize(vexNum);
+	arcs.resize(vexNum,vector<int>(vexNum,INFINITY));
+//	for(int i = 0; i < g.vexNum; i++){
+//		cin>>g.vertexes[i];
+//		g.arcs[i].resize(g.vexNum);
+//	}
+	
     for(int i = 0; i < vexNum; i++){
 		for(int j = 0; j < vexNum; j++){
 			cin>>arcs[i][j];
-			if(arcs[i][j] < INFINITY){
-				arcNum++;
-			}
 		}
 	}
 }
@@ -39,7 +43,7 @@ void OutMatrixGraph(){
 }
 
 void ShortestPahtDijkstra(int v){
-	int dist[vexNum];//dist[i]中存放顶点v到顶点i的当前最短路径长度distance
+	int dist[vexNum];//dist[i]中存放顶点v到顶点i的当前最短路径长度 distance
 	int path[vexNum];//path[i]中存放顶点i的上一个顶点是那一个 
 	int s[vexNum];//s为已找到最短路径的终点集合
 
@@ -70,8 +74,7 @@ void ShortestPahtDijkstra(int v){
 		if(u!=-1){
 			s[u]=1;
 	        for(j=0;j<vexNum;j++)
-	          if(s[j]==0)
-	            if(arcs[u][j]<INFINITY && dist[u]+arcs[u][j]<dist[j]){
+	            if(s[j]==0 && arcs[u][j]<INFINITY && dist[u]+arcs[u][j]<dist[j]){
 					dist[j]=dist[u]+arcs[u][j];
 					path[j]=u;
             }
@@ -91,9 +94,9 @@ void ShortestPahtDijkstra(int v){
 					pre=path[pre];
 				}
 				printf("%d\n",pre);
-        }else{
-			printf("不存在路径\n");	
-		}
+        	}else{
+				printf("不存在路径\n");	
+			}
       }
    }
 }
@@ -107,7 +110,7 @@ int main(){
 
 	CrtMatrixGraph();
 	
-	OutMatrixGraph();
+	//OutMatrixGraph();
 
 	ShortestPahtDijkstra(0);
 	return 0;
